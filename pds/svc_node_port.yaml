@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pds-node-port
+  labels:
+    app.kubernetes.io/instance: pds
+    app.kubernetes.io/name: pds
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: ${PDS_PORT}
+      protocol: TCP
+      nodePort: ${PDS_PORT}
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      nodePort: ${PDS_DB_NODE_PORT}
+  selector:
+    app.kubernetes.io/instance: pds
+    app.kubernetes.io/name: pds

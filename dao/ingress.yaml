@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dao-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: 'nginx'
+  rules:
+    - host: ${DAO_HOSTNAME}
+      http:
+        paths:
+          - backend:
+              service:
+                name: dao
+                port:
+                  number: ${DAO_PORT}
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - ${DAO_HOSTNAME}
+      secretName: web5

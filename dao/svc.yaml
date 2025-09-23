@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dao
+  labels:
+    app.kubernetes.io/instance: dao
+    app.kubernetes.io/name: dao
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: ${DAO_PORT}
+      protocol: TCP
+      targetPort: ${DAO_PORT}
+  selector:
+    app.kubernetes.io/instance: dao
+    app.kubernetes.io/name: dao

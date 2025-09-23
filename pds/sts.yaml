@@ -1,0 +1,178 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/instance: pds
+    app.kubernetes.io/name: pds
+  name: pds
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: pds
+      app.kubernetes.io/name: pds
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: pds
+        app.kubernetes.io/name: pds
+    spec:
+      containers:
+        - image: registry.devops.rivtower.com/web5/rsky:${PDS_VERSION}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: RUST_BACKTRACE
+              value: 'full'
+            - name: LOG_ENABLED
+              value: 'true'
+            - name: LOG_LEVEL
+              value: ${LOG_LEVEL}
+            - name: PDS_ADMIN_PASSWORD
+              value: ${PDS_ADMIN_PASSWORD}
+            - name: DATABASE_URL
+              value: 'postgres://postgres:postgres@localhost/pds'
+            - name: PDS_BLOBSTORE_DISK_LOCATION
+              value: /pds/blobs
+            - name: PDS_BSKY_APP_VIEW_DID
+              value: did:web:${DAO_HOSTNAME}
+            - name: PDS_BSKY_APP_VIEW_URL
+              value: https://${DAO_HOSTNAME}
+            - name: PDS_ENABLE_DID_DOC_WITH_SESSION
+              value: 'true'
+            - name: PDS_HOSTNAME
+              value: ${PDS_HOSTNAME}
+            - name: PDS_INVITE_INTERVAL
+              value: '604800000'
+            - name: PDS_INVITE_REQUIRED
+              value: 'false'
+            - name: PDS_JWT_SECRET
+              value: ${PDS_JWT_SECRET}
+            - name: PDS_PORT
+              value: '${PDS_PORT}'
+            - name: PORT
+              value: '${PDS_PORT}'
+            - name: PDS_SERVICE_DID
+              value: did:web:${PDS_HOSTNAME}
+            - name: PDS_JWT_KEY_K256_PRIVATE_KEY_HEX
+              value: ${PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX}
+            - name: PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX
+              value: ${PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX}
+            - name: PDS_REPO_SIGNING_KEY_K256_PRIVATE_KEY_HEX
+              value: ${PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX}
+            - name: PDS_SERVICE_HANDLE_DOMAINS
+              value: '.${PDS_HOSTNAME}'
+            - name: AWS_ENDPOINT
+              value: 'https://${RES_HOSTNAME}'
+            - name: AWS_ACCESS_KEY_ID
+              value: test
+            - name: AWS_SECRET_ACCESS_KEY
+              value: test
+            - name: AWS_DEFAULT_REGION
+              value: us-east-1
+            - name: AWS_PROVIDE_NAME
+              value: localstack
+            - name: ROCKET_PORT
+              value: '${PDS_PORT}'
+            - name: ROCKET_ADDRESS
+              value: '0.0.0.0'
+            - name: INDEXER_URL
+              value: 'http://indexer.develop:${INDEXER_PORT}/'
+          name: pds
+          command:
+            - /bin/sh
+            - -c
+            - ./rsky-pds
+          ports:
+            - containerPort: ${PDS_PORT}
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 4096Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          securityContext: {}
+          volumeMounts:
+            - mountPath: /pds
+              name: pds
+        - image: m.daocloud.io/docker.io/postgres:17-bookworm
+          imagePullPolicy: IfNotPresent
+          name: database
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_DB
+              value: pds
+            - name: POSTGRES_INITDB_ARGS
+              value: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+          ports:
+            - containerPort: 5432
+              name: postgres
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 4096Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          securityContext: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: database
+        - image: m.daocloud.io/docker.io/localstack/localstack:latest
+          imagePullPolicy: IfNotPresent
+          name: localstack
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: 'test'
+            - name: AWS_SECRET_ACCESS_KEY
+              value: 'test'
+            - name: AWS_DEFAULT_REGION
+              value: 'us-east-1'
+            - name: SERVICES
+              value: 's3'
+          ports:
+            - containerPort: 4566
+              name: localstack
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 4096Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          securityContext: {}
+          volumeMounts:
+            - mountPath: /var/lib/localstack/data
+              name: localstack
+  volumeClaimTemplates:
+    - metadata:
+        name: pds
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 10Gi
+    - metadata:
+        name: database
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 50Gi
+    - metadata:
+        name: localstack
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 50Gi

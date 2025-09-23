@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pds-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: 'nginx'
+  rules:
+    - host: ${PDS_HOSTNAME}
+      http:
+        paths:
+          - backend:
+              service:
+                name: pds
+                port:
+                  number: ${PDS_PORT}
+            path: /
+            pathType: ImplementationSpecific
+    - host: '*.${PDS_HOSTNAME}'
+      http:
+        paths:
+          - backend:
+              service:
+                name: pds
+                port:
+                  number: ${PDS_PORT}
+            path: /
+            pathType: ImplementationSpecific
+    - host: ${RES_HOSTNAME}
+      http:
+        paths:
+          - backend:
+              service:
+                name: pds
+                port:
+                  number: 4566
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - ${PDS_HOSTNAME}
+      secretName: web5
+    - hosts:
+        - '*.${PDS_HOSTNAME}'
+      secretName: web5
+    - hosts:
+        - ${RES_HOSTNAME}
+      secretName: web5
