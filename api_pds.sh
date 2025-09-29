@@ -4,15 +4,15 @@
 export BASE_URL=https://$PDS_HOSTNAME
 
 # xrpc/com.atproto.server.createSession
-export createSession_rsp=$(curl --insecure -s $BASE_URL/xrpc/com.atproto.server.createSession \
-    -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"identifier": "did:web5:5todaearszbwxyrluncvvx6by5ofuauj", "password": "0x1e910cf624fcfb73fc2a2b26d6f0bca63b8b71cfa7f7027fdef9bce0a59251f0"}' | jq .)
-export accessJwt=$(echo $createSession_rsp | jq -r .accessJwt)
-export refreshJwt=$(echo $createSession_rsp | jq -r .refreshJwt)
-echo "
---- xrpc/com.atproto.server.createSession
-response = $createSession_rsp"
+# export createSession_rsp=$(curl --insecure -s $BASE_URL/xrpc/com.atproto.server.createSession \
+#     -X POST \
+#     -H "Content-Type: application/json" \
+#     -d '{"identifier": "did:web5:5todaearszbwxyrluncvvx6by5ofuauj", "password": "0x1e910cf624fcfb73fc2a2b26d6f0bca63b8b71cfa7f7027fdef9bce0a59251f0"}' | jq .)
+# export accessJwt=$(echo $createSession_rsp | jq -r .accessJwt)
+# export refreshJwt=$(echo $createSession_rsp | jq -r .refreshJwt)
+# echo "
+# --- xrpc/com.atproto.server.createSession
+# response = $createSession_rsp"
 
 # # /xrpc/app.bsky.actor.getProfile
 # export getProfile_rsp=$(curl --insecure -s -X GET $BASE_URL/xrpc/app.bsky.actor.getProfile?actor=$did \
@@ -76,11 +76,11 @@ response = $createSession_rsp"
 # response = $applyWrites_rsp"
 
 # /xrpc/com.atproto.identity.resolveIdentity
-export getRecord_api="$BASE_URL/xrpc/com.atproto.identity.resolveIdentity?identifier=did:web5:5todaearszbwxyrluncvvx6by5ofuauj"
-export getRecord_rsp=$(curl --insecure -s $getRecord_api \
-    -X GET \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer "$accessJwt"" | jq .)
-echo "
---- /xrpc/com.atproto.identity.resolveIdentity
-response = $getRecord_rsp"
+# export getRecord_api="$BASE_URL/xrpc/com.atproto.identity.resolveIdentity?identifier=did:web5:5todaearszbwxyrluncvvx6by5ofuauj"
+# export getRecord_rsp=$(curl --insecure -s $getRecord_api \
+#     -X GET \
+#     -H "Content-Type: application/json" \
+#     -H "Authorization: Bearer "$accessJwt"" | jq .)
+# echo "
+# --- /xrpc/com.atproto.identity.resolveIdentity
+# response = $getRecord_rsp"
