@@ -27,6 +27,10 @@ spec:
               value: postgres://postgres:postgres@localhost/dao
             - name: PDS
               value: https://${PDS_HOSTNAME}
+            - name: CKB_URL
+              value: '${CKB_URL}'
+            - name: INDEXER_BIND_URL
+              value: '${INDEXER_BIND_URL}'
           name: dao
           command: ['dao']
           args:
@@ -39,6 +43,10 @@ spec:
               '$(DB_URL)',
               '--pds',
               '$(PDS)',
+              '--ckb-url',
+              '$(CKB_URL)',
+              '--indexer-url',
+              '$(INDEXER_BIND_URL)',
               '--apidoc',
             ]
           ports:
