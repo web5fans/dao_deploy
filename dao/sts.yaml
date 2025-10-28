@@ -31,6 +31,8 @@ spec:
               value: '${CKB_URL}'
             - name: INDEXER_BIND_URL
               value: '${INDEXER_BIND_URL}'
+            - name: INDEXER_DID_URL
+              value: '${INDEXER_DID_URL}'
           name: dao
           command: ['dao']
           args:
@@ -45,8 +47,10 @@ spec:
               '$(PDS)',
               '--ckb-url',
               '$(CKB_URL)',
-              '--indexer-url',
+              '--indexer-bind-url',
               '$(INDEXER_BIND_URL)',
+              '--indexer-did-url',
+              '$(INDEXER_DID_URL)',
               '--apidoc',
             ]
           ports:
