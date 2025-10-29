@@ -37,8 +37,6 @@ spec:
           command: ['address-bind-be']
           args:
             [
-              '--db-url',
-              '$(DB_URL)',
               '--network',
               '$(CKB_NETWORK)',
               '--ckb-url',
@@ -48,6 +46,8 @@ spec:
               'debug,hyper_util=info,sqlx=info',
               '--port',
               '$(PORT)',
+              '--db-url',
+              '$(DB_URL)',
               '-s',
               '$(START_HEIGHT)',
             ]
