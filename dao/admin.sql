@@ -1,10 +1,3 @@
 -- Auto-generated SQL script
-UPDATE public."section"
-	SET "owner"='did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil',administrators='{did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil}'
-	WHERE id=0;
-UPDATE public."section"
-	SET "owner"='did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil',administrators='{did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil}'
-	WHERE id=1;
-UPDATE public."section"
-	SET "owner"='did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil',administrators='{did:web5:wr2zzk7ljy64swa6akrmi7zxwysztvil}'
-	WHERE id=2;
+INSERT INTO public."administrator" (did, permission)
+	VALUES ('did:web5:5v5drt6o34xfhgtenepkxziy3eyuhs25', 2);
