@@ -76,7 +76,13 @@ spec:
             - name: ROCKET_ADDRESS
               value: '0.0.0.0'
             - name: INDEXER_URL
-              value: 'http://indexer.develop.svc.cluster.local:${INDEXER_PORT}/'
+              value: '${INDEXER_DID_URL}/'
+            - name: USER_PROFILE_URL
+              value: 'https://${HOSTNAME}/profile'
+            - name: DID_PREFIX
+              value: did:ckb
+            - name: CKB_NETWORK
+              value: ckb_testnet
           name: pds
           command:
             - /bin/sh
