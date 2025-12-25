@@ -62,15 +62,17 @@ spec:
             - name: PDS_SERVICE_HANDLE_DOMAINS
               value: '.${PDS_HOSTNAME}'
             - name: AWS_ENDPOINT
-              value: 'https://${RES_HOSTNAME}'
+              value: '${AWS_ENDPOINT}'
             - name: AWS_ACCESS_KEY_ID
-              value: test
+              value: ${AWS_ACCESS_KEY_ID}
             - name: AWS_SECRET_ACCESS_KEY
-              value: test
+              value: ${AWS_SECRET_ACCESS_KEY}
             - name: AWS_DEFAULT_REGION
-              value: us-east-1
+              value: ${AWS_DEFAULT_REGION}
             - name: AWS_PROVIDE_NAME
-              value: localstack
+              value: ${AWS_PROVIDE_NAME}
+            - name: AWS_BUCKET
+              value: ${AWS_BUCKET}
             - name: ROCKET_PORT
               value: '${PDS_PORT}'
             - name: ROCKET_ADDRESS
@@ -130,33 +132,6 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: database
-        - image: m.daocloud.io/docker.io/localstack/localstack:latest
-          imagePullPolicy: IfNotPresent
-          name: localstack
-          env:
-            - name: AWS_ACCESS_KEY_ID
-              value: 'test'
-            - name: AWS_SECRET_ACCESS_KEY
-              value: 'test'
-            - name: AWS_DEFAULT_REGION
-              value: 'us-east-1'
-            - name: SERVICES
-              value: 's3'
-          ports:
-            - containerPort: 4566
-              name: localstack
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 4000m
-              memory: 4096Mi
-            requests:
-              cpu: 100m
-              memory: 256Mi
-          securityContext: {}
-          volumeMounts:
-            - mountPath: /var/lib/localstack/data
-              name: localstack
   volumeClaimTemplates:
     - metadata:
         name: pds
@@ -168,14 +143,6 @@ spec:
             storage: 10Gi
     - metadata:
         name: database
-      spec:
-        accessModes: ['ReadWriteOnce']
-        storageClassName: local-path
-        resources:
-          requests:
-            storage: 50Gi
-    - metadata:
-        name: localstack
       spec:
         accessModes: ['ReadWriteOnce']
         storageClassName: local-path
