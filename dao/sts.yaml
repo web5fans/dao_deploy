@@ -33,6 +33,8 @@ spec:
               value: '${INDEXER_BIND_URL}'
             - name: INDEXER_DID_URL
               value: '${INDEXER_DID_URL}'
+            - name: INDEXER_VOTE_URL
+              value: '${INDEXER_VOTE_URL}'
           name: dao
           command: ['dao']
           args:
