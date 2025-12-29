@@ -51,6 +51,8 @@ spec:
               '$(INDEXER_BIND_URL)',
               '--indexer-did-url',
               '$(INDEXER_DID_URL)',
+              '--indexer-vote-url',
+              '$(INDEXER_VOTE_URL)',
               '--apidoc',
             ]
           ports:
