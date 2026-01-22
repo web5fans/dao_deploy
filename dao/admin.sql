@@ -6,3 +6,4 @@ INSERT INTO public."administrator" (did, permission) VALUES ('did:ckb:fzdw3gwjha
 INSERT INTO public."administrator" (did, permission) VALUES ('did:ckb:72pobge4ormmfxbqeuxfjt66hfc2cxhy', 2);
 INSERT INTO public."administrator" (did, permission) VALUES ('did:ckb:5opxuzamvomeoj5f6e73hgqmb7c557do', 2);
 INSERT INTO public."administrator" (did, permission) VALUES ('did:ckb:uqpym6beyyv2p2rtknjsowbb6tjvgrhh', 2);
+INSERT INTO public."administrator" (did, permission) VALUES ('did:ckb:ez4owwwn3r7dass5xk4sj7syfjhlthgp', 2);
